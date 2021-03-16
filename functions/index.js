@@ -18,11 +18,11 @@ const { db } = require('./util/admin');
 app.use('/auth/users', require('./routes/auth/users'));
 
 // API Routes
-
+app.use('/posts', require('./routes/posts'));
 
 // Boilerplate test stuff for requesting anything
 app.get('*', (req, res) => {
-	res.send('Hello from Express on Firebase!');
+  res.send('Hello from Express on Firebase!');
 });
 
 exports.api = functions.https.onRequest(app);
