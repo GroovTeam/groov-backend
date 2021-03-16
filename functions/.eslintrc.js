@@ -11,6 +11,7 @@ module.exports = {
   'rules': {
     'quotes': ['error', 'single'],
     'object-curly-spacing': ['error', 'always'],
-    'curly': [], // Fix?
+    'curly': [0],
+    'new-cap': [0],
   },
 };
