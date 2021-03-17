@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
   db.collection('posts').add(post).then((doc) => {
     res.json({ postID: doc.id, result: 'Success' });
   }).catch((err) => {
-    res.status(500).json({ error: 'Error when adding post.' });
+    res.status(500).json({ err });
   });
 });
 
@@ -32,7 +32,7 @@ router.get('/getPostsByTags', (req, res) => {
         res.json({ results: resArr });
       })
       .catch((err) => {
-        res.status(500).json({ error: 'Issue with post collection search' });
+        res.status(500).json({ err });
       });
 });
 

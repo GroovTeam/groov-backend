@@ -6,12 +6,12 @@ module.exports = {
   },
   'extends': [
     'eslint:recommended',
-    'google',
   ],
   'rules': {
     'quotes': ['error', 'single'],
     'object-curly-spacing': ['error', 'always'],
     'curly': [0],
     'new-cap': [0],
+    'no-trailing-spaces': [0],
   },
 };
