@@ -1,6 +1,7 @@
 // Firebase initialization
 const functions = require('firebase-functions');
 const admin = require('firebase-admin'); // May or may not need
+const auth = require('./util/auth');
 
 // Server intialization
 const express = require('express');
@@ -15,14 +16,16 @@ app.use(cors({ origin: true }));
 const { db } = require('./util/admin');
 
 // Auth Routes
-app.use('/auth/users', require('./routes/auth/users'));
+app.use('/auth/register', require('./routes/auth/register'));
+app.use('/auth/login', require('./routes/auth/login'));
 
 // API Routes
-
+app.use('/posts', require('./routes/posts'));
+app.use('/user', auth, require('./routes/user'));
 
 // Boilerplate test stuff for requesting anything
 app.get('*', (req, res) => {
-	res.send('Hello from Express on Firebase!');
+  res.send('Hello from Express on Firebase!');
 });
 
 exports.api = functions.https.onRequest(app);
