@@ -20,7 +20,7 @@ app.use('/auth/register', require('./routes/auth/register'));
 app.use('/auth/login', require('./routes/auth/login'));
 
 // API Routes
-app.use('/posts', require('./routes/posts'));
+app.use('/posts', auth, require('./routes/posts'));
 app.use('/user', auth, require('./routes/user'));
 
 // Boilerplate test stuff for requesting anything

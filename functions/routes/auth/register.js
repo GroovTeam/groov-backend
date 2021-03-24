@@ -20,14 +20,21 @@ router.post('/', (req, res) => {
   db.doc(`/users/${userData.username}`).get()
     .then((doc) => {
       if (doc.exists) {
-        return res.status(400).json({ message: 'Username is already in use' });
+        res.status(400).json({ message: 'Username is already in use' });
+        throw new Error('Username already in use.');
       }
       else {
         return firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password);
       }
     })
     .then((data) => {
-      // get uid????
+      data.user.sendEmailVerification()
+        .then(() => {
+          console.log('Email verifcation sent!');
+        })
+        .catch((err) => {
+          console.error(err);
+        });
       userData.uid = data.user.uid;
       return data.user.getIdToken();
     })
@@ -46,10 +53,12 @@ router.post('/', (req, res) => {
       // auth/invalid-email
       // auth/operation-not-allowed
       // auth/weak-password
-      if (err.code.startsWith('auth'))
-        return res.status(400).json({ message: err.code });
-      else
-        return res.status(500).json({ message: err.code });
+      if(err.code) {
+        if(err.code.startsWith('auth'))
+          return res.status(400).json({ message: err.code });
+        else
+          return res.status(500).json({ message: err.code });
+      }
     });
 });
 
