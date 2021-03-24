@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { db } = require('../util/admin');
 
-router.post('/info', (req, res) => {
+router.post('/profile', (req, res) => {
   const userData = {
     likes: req.body.likes,
     dislikes: req.body.dislikes,
@@ -24,23 +24,39 @@ router.post('/info', (req, res) => {
   });
 });
 
-router.get('/info', (req, res) => {
-  let userData = {};
-  let userInterests = {};
-  db.doc(`/users/${req.user.username}`)
-  .get()
-  .then((doc) => {
-    userData = doc.data();
-    userInterests = {
-      likes: userData.likes,
-      dislikes: userData.dislikes,
-      neutrals: userData.neutrals
-    };
-    res.status(200).json(userInterests);
-  })
-  .catch((err) => {
-    res.status(500).json(err);
+router.get('/profile', (req, res) => {
+  // let userData = {};
+  const userInterests = {
+    likes: req.user.likes,
+    dislikes: req.user.dislikes,
+    neutrals: req.user.neutrals,
+  };
+
+  res.status(200).json(userInterests);
+});
+
+// Users Feed
+router.get('/feed', (req, res) => {
+
+});
+
+// Get current user's liked posts
+router.get('/likedPosts', (req, res) => {
+  const resArr = [];
+  db.collectionGroup('likers').where('username', '==', req.user.username).get()
+  .then((snapshot) => {
+    snapshot.forEach((postDoc) => {
+      // May want to only serve parts of data, for now just passing all data
+      const postData = postDoc.data();
+      resArr.push(postData);
+    });
+    res.json({ results: resArr });
   });
+});
+
+// Get current user's posts
+router.get('/posts', (req, res) => {
+
 });
 
 const validateData = (data) => {
