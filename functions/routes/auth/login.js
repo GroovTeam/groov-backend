@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { firebase } = require('../../util/admin');
 
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
   const userData = {
     email: req.body.email,
     password: req.body.password,
