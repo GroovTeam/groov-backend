@@ -13,6 +13,7 @@ module.exports = {
     'curly': [0],
     'new-cap': [0],
     'no-trailing-spaces': [0],
-    'semi': ['warn', 'always']
+    'semi': ['warn', 'always'],
+    'arrow-parens': ['warn', 'as-needed']
   },
 };

@@ -24,7 +24,7 @@ router.post('/profile', (req, res) => {
   .then(() => {
     return res.status(200).json({ message: 'Successfully posted user data' });
   })
-  .catch((err) => {
+  .catch(err => {
     return res.status(500).json(err);
   });
 });
@@ -32,7 +32,7 @@ router.post('/profile', (req, res) => {
 // Get current user's profile info
 router.get('/profile', (req, res) => {
   db.doc(`/users/${req.user.username}`).get()
-  .then((userDoc) => {
+  .then(userDoc => {
     let userData = userDoc.data();
     
     // Strip some data
@@ -49,7 +49,7 @@ router.get('/profile', (req, res) => {
 
     return res.status(200).json(profileData);
   })
-  .catch((err) => {
+  .catch(err => {
     return res.status(500).json(err);
   });
 });
@@ -57,7 +57,7 @@ router.get('/profile', (req, res) => {
 // Get user profile info by username
 router.get('/profile/:username', (req, res) => {
   db.doc(`/users/${req.user.username}`).get()
-  .then((userDoc) => {
+  .then(userDoc => {
     if (!userDoc.exists)
         return res.status(404).json({ message: 'User does not exist' });
 
@@ -77,7 +77,7 @@ router.get('/profile/:username', (req, res) => {
 
     return res.status(200).json(profileData);
   })
-  .catch((err) => {
+  .catch(err => {
     return res.status(500).json(err);
   });
 });
@@ -88,7 +88,7 @@ router.get('/likedPosts', (req, res) => {
 
   db.collection('posts')
     .where('likes', 'array-contains', username).get()
-    .then((snapshot) => {
+    .then(snapshot => {
       const postData = snapshot.docs
       .map(doc => {
         let postDoc = doc.data();
@@ -97,7 +97,7 @@ router.get('/likedPosts', (req, res) => {
       });
       return res.json({ results: postData });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     });
@@ -109,7 +109,7 @@ router.get('/likedPosts/:username', (req, res) => {
 
   db.collection('posts')
     .where('likes', 'array-contains', username).get()
-    .then((snapshot) => {
+    .then(snapshot => {
       const postData = snapshot.docs
       .map(doc => {
         let postDoc = doc.data();
@@ -118,7 +118,7 @@ router.get('/likedPosts/:username', (req, res) => {
       });
       return res.json({ results: postData });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     });
@@ -131,7 +131,7 @@ router.get('/posts', (req, res) => {
   db.collection('posts')
     .where('username', '==', username)
     .orderBy('timeStamp', 'desc').get()
-    .then((snapshot) => {
+    .then(snapshot => {
       const postData = snapshot.docs
         .map(doc => {
           let postDoc = doc.data();
@@ -140,7 +140,7 @@ router.get('/posts', (req, res) => {
         });
       return res.json({ results: postData });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).json({ err });
     });
 });
@@ -152,7 +152,7 @@ router.get('/posts/:username', (req, res) => {
   db.collection('posts')
     .where('username', '==', username)
     .orderBy('timeStamp', 'desc').get()
-    .then((snapshot) => {
+    .then(snapshot => {
       const postData = snapshot.docs
         .map(doc => {
           let postDoc = doc.data();
@@ -161,12 +161,12 @@ router.get('/posts/:username', (req, res) => {
         });
       return res.json({ results: postData });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).json({ err });
     });
 });
 
-const validateData = (data) => {
+const validateData = data => {
   let errors = {};
 
   // if (data.likes === undefined || !Array.isArray(data.likes))

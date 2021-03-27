@@ -18,10 +18,10 @@ router.post('/', (req, res) => {
     return res.status(400).json(errors);
   
   db.collection('posts').add(postData)
-  .then((doc) => {
+  .then(doc => {
     return res.json({ postID: doc.id, message: 'Success' });
   })
-  .catch((err) => {
+  .catch(err => {
     return res.status(500).json({ err });
   });
 });
@@ -33,7 +33,7 @@ router.delete('/delete/:id', (req, res) => {
   const postID = req.params.id;
 
   db.collection('posts').doc(postID).get()
-    .then((doc) => {
+    .then(doc => {
       if(!doc.exists)
         return res.status(404).json({ message: 'Post does not exist.' });
       
@@ -46,7 +46,7 @@ router.delete('/delete/:id', (req, res) => {
           return res.json({ message: 'Post has been successfully deleted.' });
         });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     });
@@ -57,7 +57,7 @@ router.get('/post/:id', (req, res) => {
   const postID = req.params.id;
 
   db.collection('posts').doc(postID).get()
-    .then((doc) => {
+    .then(doc => {
       if(!doc.exists)
         return res.status(404).json({ message: 'Post does not exist.' });
       
@@ -66,7 +66,7 @@ router.get('/post/:id', (req, res) => {
 
       return res.status(200).json(postData);
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     });
@@ -84,15 +84,15 @@ router.get('/feed', (req, res) => {
     .where('posses', 'array-contains-any', userPosses)
     .orderBy('timeStamp', 'desc')
     .get()
-    .then((snapshot) => {
-      snapshot.forEach((postDoc) => {
+    .then(snapshot => {
+      snapshot.forEach(postDoc => {
         const postData = postDoc.data();
         postData.postID = postDoc.id;
         resArr.push(postData);
       });
       return res.json({ results: resArr });
     })
-    .catch((err) => {
+    .catch(err => {
       return res.status(500).json({ message: err.message });
     });
 });
@@ -103,15 +103,15 @@ router.get('/new', (req, res) => {
   db.collection('posts')
     .orderBy('timeStamp', 'desc')
     .get()
-    .then((snapshot) => {
-      snapshot.forEach((postDoc) => {
+    .then(snapshot => {
+      snapshot.forEach(postDoc => {
         let postData = postDoc.data();
         postData.postID = postDoc.id;
         resArr.push(postData);
       });
       return res.json({ results: resArr });
     })
-    .catch((err) => {
+    .catch(err => {
       return res.status(500).json({ message: err.message });
     });
 });
@@ -121,7 +121,7 @@ router.post('/like/:postID', (req, res) => {
   const postID = req.params.postID;
 
   db.collection('posts').doc(postID).get()
-    .then((doc) => {
+    .then(doc => {
       if (!doc.exists)
         return res.status(404).json({ message: 'Post does not exist' });
 
@@ -133,7 +133,7 @@ router.post('/like/:postID', (req, res) => {
           return res.json({ message: 'Successfully liked Post' });
         });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     });
@@ -144,7 +144,7 @@ router.post('/unlike/:postID', (req, res) => {
   const postID = req.params.postID;
 
   db.collection('posts').doc(postID).get()
-    .then((doc) => {
+    .then(doc => {
       if (!doc.exists)
         return res.status(404).json({ message: 'Post does not exist' });
 
@@ -156,7 +156,7 @@ router.post('/unlike/:postID', (req, res) => {
           return res.json({ message: 'Successfully unliked Post' });
         });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     });
@@ -177,8 +177,8 @@ router.get('/tags', (req, res) => {
   db.collection('posts')
       .where('tags', 'array-contains-any', tags)
       .orderBy('timeStamp', 'desc').get()
-      .then((snapshot) => {
-        snapshot.forEach((postDoc) => {
+      .then(snapshot => {
+        snapshot.forEach(postDoc => {
           // May want to only serve parts of data, for now just passing all data
           const postData = postDoc.data();
           postData.postID = postDoc.id;
@@ -186,16 +186,16 @@ router.get('/tags', (req, res) => {
         });
         res.json({ results: resArr });
       })
-      .catch((err) => {
+      .catch(err => {
         res.status(500).json({ err });
       });
 });
 
-const isEmpty = (str) => {
+const isEmpty = str => {
   return (str === undefined || str === '');
 };
 
-const validateData = (data) => {
+const validateData = data => {
   let errors = {};
 
   if(isEmpty(data.content))

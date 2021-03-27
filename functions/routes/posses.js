@@ -5,7 +5,7 @@ const { db, admin } = require('../util/admin');
 // Get a list of ALL current posses' data
 router.get('/', (req, res) => {
   db.collection('posses').get()
-    .then((snapshot) => {
+    .then(snapshot => {
       const posseData = snapshot.docs
         .map(doc => {
           let posseDoc = doc.data();
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
         });
       return res.json({ results: posseData });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     });
@@ -25,7 +25,7 @@ router.post('/join/:posseID', (req, res) => {
   const posseID = req.params.posseID;
 
   db.collection('posses').doc(posseID).get()
-    .then((doc) => {
+    .then(doc => {
       if (!doc.exists)
         return res.status(404).json({ message: 'Posse does not exist' });
       
@@ -38,7 +38,7 @@ router.post('/join/:posseID', (req, res) => {
           return res.json({ message: 'Successfully joined posse' });
         });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     });
@@ -49,7 +49,7 @@ router.post('/leave/:posseID', (req, res) => {
   const posseID = req.params.posseID;
 
   db.collection('posses').doc(posseID).get()
-    .then((doc) => {
+    .then(doc => {
       if (!doc.exists)
         return res.status(404).json({ message: 'Posse does not exist' });
       
@@ -62,7 +62,7 @@ router.post('/leave/:posseID', (req, res) => {
           return res.json({ message: 'Successfully left posse' });
         });
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     });
@@ -81,16 +81,16 @@ router.post('/create', (req, res) => {
   .where('name', '==', posseData.name)
   .limit(1)
   .get()
-  .then((snapshot) => {
+  .then(snapshot => {
     if(snapshot.docs[0])
       return res.status(409).json({ message: 'Posse already exists.' });
 
     db.collection('posses').add(posseData)
-      .then((posseDoc) => {
+      .then(posseDoc => {
         return res.json({ message: 'Posse has been created.', posseID: posseDoc.id });
       });
   })
-  .catch((err) => {
+  .catch(err => {
     console.log(err.message);
     return res.status(500).json({ message: err.message });
   });
