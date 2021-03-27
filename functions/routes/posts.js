@@ -61,8 +61,10 @@ router.get('/post/:id', (req, res) => {
       if(!doc.exists)
         return res.status(404).json({ message: 'Post does not exist.' });
       
-      // Probably more stuff here
-      return res.status(200).json({ result: doc.data() });
+      const postData = doc.data();
+      postData.postID = doc.id;
+
+      return res.status(200).json(postData);
     })
     .catch((err) => {
       console.log(err.message);
@@ -198,8 +200,8 @@ const validateData = (data) => {
 
   if(isEmpty(data.content))
     errors.contents = 'Cannot be empty';
-  if(isEmpty(data.tags))
-    errors.tags = 'Cannot be empty';
+  if(isEmpty(data.posses))
+    errors.posses = 'Cannot be empty';
 
   return { 
     errors, 
