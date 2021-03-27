@@ -7,6 +7,10 @@ firebase.auth().useEmulator('http://localhost:9099');
 
 const db = admin.firestore();
 
+db.settings({
+  ignoreUndefinedProperties: true,
+});
+
 exports.db = db;
 exports.admin = admin;
 exports.firebase = firebase;
