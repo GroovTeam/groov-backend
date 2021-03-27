@@ -14,13 +14,13 @@ router.post('/', (req, res) => {
     return res.status(400).json(errors);
 
   firebase.auth().signInWithEmailAndPassword(userData.email, userData.password)
-    .then((data) => {
+    .then(data => {
       return data.user.getIdToken(true);
     })
-    .then((token) => {
+    .then(token => {
       return res.json({ token });
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
       // auth/invalid-email
       // auth/user-disabled
@@ -33,12 +33,12 @@ router.post('/', (req, res) => {
     });
 });
 
-const isEmpty = (str) => {
+const isEmpty = str => {
   return (str === undefined || str === '');
 };
 
 // Data validation
-const validateData = (data) => {
+const validateData = data => {
   let errors = {};
 
   if (isEmpty(data.email))

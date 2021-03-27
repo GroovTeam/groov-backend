@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
   }
 
   admin.auth().verifyIdToken(idToken)
-      .then((decodedToken) => {
+      .then(decodedToken => {
         if (!decodedToken.email_verified && !req.body.bypass) 
           throw new Error('User email not verified');
 
@@ -22,12 +22,12 @@ module.exports = (req, res, next) => {
         .where('uid', '==', req.user.uid)
         .get();
       })
-      .then((data) => {
+      .then(data => {
         // req.user.username = data.docs[0].data().username;
         req.user = data.docs[0].data();
         return next();
       })
-      .catch((err) => {
+      .catch(err => {
         console.error('Error while verifying token', err);
         return res.status(403).json({ message: err.message });
       });

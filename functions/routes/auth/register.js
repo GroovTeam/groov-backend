@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
 
   let token;
   db.doc(`/users/${userData.username}`).get()
-    .then((doc) => {
+    .then(doc => {
       if (doc.exists) {
         res.status(400).json({ message: 'Username is already in use' });
         throw new Error('Username already in use.');
@@ -27,25 +27,25 @@ router.post('/', (req, res) => {
         return firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password);
       }
     })
-    .then((data) => {
+    .then(data => {
       data.user.sendEmailVerification()
         .then(() => {
           console.log('Email verifcation sent!');
         })
-        .catch((err) => {
+        .catch(err => {
           console.error(err);
         });
       userData.uid = data.user.uid;
       return data.user.getIdToken();
     })
-    .then((idToken) => {
+    .then(idToken => {
       token = idToken;
       return db.doc(`/users/${userData.username}`).set(userData);
     })
     .then(() => {
       return res.status(201).json({ token });
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
 
       // Firebase auth errors:
@@ -62,12 +62,12 @@ router.post('/', (req, res) => {
     });
 });
 
-const isEmpty = (str) => {
+const isEmpty = str => {
   return (str === undefined || str === '');
 };
 
 // Data validation
-const validateData = (data) => {
+const validateData = data => {
   let errors = {};
 
   if (isEmpty(data.email))

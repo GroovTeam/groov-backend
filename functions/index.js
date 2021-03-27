@@ -22,11 +22,12 @@ app.use('/auth/login', require('./routes/auth/login'));
 // API Routes
 app.use('/posts', auth, require('./routes/posts'));
 app.use('/user', auth, require('./routes/user'));
+app.use('/posses', auth, require('./routes/posses'));
 
 // Boilerplate test stuff for requesting anything
-app.get('*', (req, res) => {
-  res.send('Hello from Express on Firebase!');
-});
+// app.get('*', (req, res) => {
+//   res.send('Hello from Express on Firebase!');
+// });
 
 exports.api = functions.https.onRequest(app);
 
