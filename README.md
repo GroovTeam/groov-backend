@@ -52,3 +52,6 @@ Required login fields:
 ```
 
 NOTE: Firestore resets upon new emulator instance
+
+## Further documentation
+Documentation on all endpoints can be found on [SwaggerHub](https://app.swaggerhub.com/apis-docs/The-Poop-Crew/Poop-Crew-API/1.0.0#/)
