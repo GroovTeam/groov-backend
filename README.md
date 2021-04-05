@@ -23,6 +23,13 @@ npm install --prefix ./functions
 
 ## Usage example
 
+In /functions/util/admin.js uncomment the following on line 6 to use the authentication emulator
+```js
+// firebase.auth().useEmulator('http://localhost:9099');
+```
+
+Rename /functions/dummy-config.js to just config.js to use emulator
+
 Start the emulator
 
 ```sh
