@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
   db.doc(`/users/${userData.username}`).get()
     .then(doc => {
       if (doc.exists) {
-        res.status(400).json({ message: 'Username is already in use' });
+        res.status(409).json({ message: 'Username is already in use' });
         throw new Error('Username already in use.');
       }
       else {

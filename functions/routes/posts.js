@@ -76,7 +76,7 @@ router.get('/post/:id', (req, res) => {
 router.get('/feed', (req, res) => {
   const userPosses = req.user.posses;
   if (!userPosses || userPosses.length === 0)
-    return res.json({ message: 'User has not joined any posses' }); // TODO: STATUS
+    return res.json({ results: [], message: 'User has not joined any posses' });
   const resArr = [];
 
   // TODO: Current limit of posse request is 10
