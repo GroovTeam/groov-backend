@@ -24,6 +24,9 @@ app.use('/posts', auth, require('./routes/posts'));
 app.use('/user', auth, require('./routes/user'));
 app.use('/posses', auth, require('./routes/posses'));
 
+// External API Routes
+app.use('/youtube/search', require('./routes/youtube/search'));
+
 // Boilerplate test stuff for requesting anything
 // app.get('*', (req, res) => {
 //   res.send('Hello from Express on Firebase!');
