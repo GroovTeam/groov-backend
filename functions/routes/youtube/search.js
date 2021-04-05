@@ -24,10 +24,10 @@ router.post('/:query', (req, res) => {
       const items = data.items;
       items.forEach(video => {
         const videoID = video.id.videoId;
-        video.snippet['videoURL'] = `https://www.youtube.com/watch?v=${videoID}`;
+        video['videoURL'] = `https://www.youtube.com/watch?v=${videoID}`;
       });
 
-      return res.json(data);
+      return res.json(data.items);
     })
     .catch(err => {
       console.error(err);
