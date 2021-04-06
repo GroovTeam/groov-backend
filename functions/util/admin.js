@@ -3,7 +3,7 @@ const firebase = require('firebase');
 const config = require('../config');
 admin.initializeApp();
 firebase.initializeApp(config);
-firebase.auth().useEmulator('http://localhost:9099');
+// firebase.auth().useEmulator('http://localhost:9099');
 
 const db = admin.firestore();
 

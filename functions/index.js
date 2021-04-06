@@ -1,6 +1,6 @@
 // Firebase initialization
 const functions = require('firebase-functions');
-const admin = require('firebase-admin'); // May or may not need
+// const admin = require('firebase-admin'); // May or may not need
 const auth = require('./util/auth');
 
 // Server intialization
@@ -13,7 +13,7 @@ const app = express();
 app.use(cors({ origin: true }));
 
 // DB Initialization
-const { db } = require('./util/admin');
+// const { db } = require('./util/admin');
 
 // Auth Routes
 app.use('/auth/register', require('./routes/auth/register'));

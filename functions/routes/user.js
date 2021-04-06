@@ -14,11 +14,6 @@ router.post('/profile', (req, res) => {
     tagNeutrals: req.body.neutrals
   };
 
-  const { errors, valid } = validateData(userData);
-
-  if(!valid)
-    return res.status(400).json(errors);
-
   db.doc(`/users/${req.user.username}`)
   .set(userData, { merge: true })
   .then(() => {
@@ -165,21 +160,5 @@ router.get('/posts/:username', (req, res) => {
       res.status(500).json({ err });
     });
 });
-
-const validateData = data => {
-  let errors = {};
-
-  // if (data.likes === undefined || !Array.isArray(data.likes))
-  //   errors.likes = 'must have likes array'
-  // if (data.dislikes === undefined || !Array.isArray(data.dislikes))
-  //   errors.dislikes = 'must have dislikes array'
-  // if (data.neutrals === undefined || !Array.isArray(data.neutrals))
-  //   errors.neutrals = 'must have neutrals array'
-
-  return {
-    errors,
-    valid: Object.keys(errors).length === 0 ? true : false
-  };
-};
 
 module.exports = router;

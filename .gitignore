@@ -1,6 +1,9 @@
 # Node modules
 functions/node_modules
 
+# Configs
+**/config.js
+
 # Logs
 logs
 *.log
