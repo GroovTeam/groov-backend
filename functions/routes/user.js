@@ -9,9 +9,9 @@ router.post('/profile', (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     bio: req.body.bio,
-    tagLikes: req.body.likes,
-    tagDislikes: req.body.dislikes,
-    tagNeutrals: req.body.neutrals
+    tagLikes: req.body.tagLikes,
+    tagDislikes: req.body.tagDislikes,
+    tagNeutrals: req.body.tagNeutrals,
   };
 
   db.doc(`/users/${req.user.username}`)
@@ -51,7 +51,7 @@ router.get('/profile', (req, res) => {
 
 // Get user profile info by username
 router.get('/profile/:username', (req, res) => {
-  db.doc(`/users/${req.user.username}`).get()
+  db.doc(`/users/${req.params.username}`).get()
   .then(userDoc => {
     if (!userDoc.exists)
         return res.status(404).json({ message: 'User does not exist' });
