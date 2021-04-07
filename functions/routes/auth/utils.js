@@ -15,7 +15,6 @@ router.get('/userexists/:username', (req, res) => {
 
 router.get('/emailexists/:email', (req,res) => {
   const email = req.params.email;
-  console.log(email);
   if(!email)
     return res.status(400).json({ message: 'Missing email param.' });
 
