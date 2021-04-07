@@ -9,6 +9,9 @@ router.post('/', (req, res) => {
     username: req.body.username,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
+    tagLikes: req.body.tagLikes,
+    tagDislikes: req.body.tagDislikes,
+    tagNeutrals: req.body.tagNeutrals,
     dateCreated: admin.firestore.FieldValue.serverTimestamp(),
   };
 
