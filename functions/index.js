@@ -18,6 +18,7 @@ app.use(cors({ origin: true }));
 // Auth Routes
 app.use('/auth/register', require('./routes/auth/register'));
 app.use('/auth/login', require('./routes/auth/login'));
+app.use('/utils', require('./routes/auth/utils'));
 
 // API Routes
 app.use('/posts', auth, require('./routes/posts'));
