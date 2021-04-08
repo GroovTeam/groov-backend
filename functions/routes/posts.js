@@ -10,20 +10,23 @@ router.post('/', (req, res) => {
     content: req.body.content,
     posses: req.body.posses,
     tags: req.body.tags,
+    hasAudio: req.body.hasAudio,
+    beatFile: req.body.audioFile,
+    recordingFile: req.body.recordingFile,
     timeStamp: admin.firestore.FieldValue.serverTimestamp(),
   };
-  
+
   const { errors, valid } = validateData(postData);
   if (!valid)
     return res.status(400).json(errors);
-  
+
   db.collection('posts').add(postData)
-  .then(doc => {
-    return res.json({ postID: doc.id, message: 'Success' });
-  })
-  .catch(err => {
-    return res.status(500).json({ err });
-  });
+    .then(doc => {
+      return res.json({ postID: doc.id, message: 'Success' });
+    })
+    .catch(err => {
+      return res.status(500).json({ err });
+    });
 });
 
 // Delete a post
@@ -34,9 +37,9 @@ router.delete('/delete/:id', (req, res) => {
 
   db.collection('posts').doc(postID).get()
     .then(doc => {
-      if(!doc.exists)
+      if (!doc.exists)
         return res.status(404).json({ message: 'Post does not exist.' });
-      
+
       const postData = doc.data();
       if (req.user.username !== postData.username)
         return res.status(403).json({ message: 'You do not have the authorization to delete this post.' });
@@ -58,9 +61,9 @@ router.get('/post/:id', (req, res) => {
 
   db.collection('posts').doc(postID).get()
     .then(doc => {
-      if(!doc.exists)
+      if (!doc.exists)
         return res.status(404).json({ message: 'Post does not exist.' });
-      
+
       const postData = doc.data();
       postData.postID = doc.id;
 
@@ -175,20 +178,20 @@ router.get('/tags', (req, res) => {
   console.log(tags);
   const resArr = [];
   db.collection('posts')
-      .where('tags', 'array-contains-any', tags)
-      .orderBy('timeStamp', 'desc').get()
-      .then(snapshot => {
-        snapshot.forEach(postDoc => {
-          // May want to only serve parts of data, for now just passing all data
-          const postData = postDoc.data();
-          postData.postID = postDoc.id;
-          resArr.push(postData);
-        });
-        res.json({ results: resArr });
-      })
-      .catch(err => {
-        res.status(500).json({ err });
+    .where('tags', 'array-contains-any', tags)
+    .orderBy('timeStamp', 'desc').get()
+    .then(snapshot => {
+      snapshot.forEach(postDoc => {
+        // May want to only serve parts of data, for now just passing all data
+        const postData = postDoc.data();
+        postData.postID = postDoc.id;
+        resArr.push(postData);
       });
+      res.json({ results: resArr });
+    })
+    .catch(err => {
+      res.status(500).json({ err });
+    });
 });
 
 const isEmpty = str => {
@@ -198,14 +201,14 @@ const isEmpty = str => {
 const validateData = data => {
   let errors = {};
 
-  if(isEmpty(data.content))
+  if (isEmpty(data.content))
     errors.contents = 'Cannot be empty';
-  if(isEmpty(data.posses))
+  if (isEmpty(data.posses))
     errors.posses = 'Cannot be empty';
 
-  return { 
-    errors, 
-    valid: Object.keys(errors).length === 0 ? true : false 
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0 ? true : false
   };
 };
 
