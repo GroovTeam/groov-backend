@@ -25,6 +25,7 @@ app.use('/posts', auth, require('./routes/posts'));
 app.use('/user', auth, require('./routes/user'));
 app.use('/posses', auth, require('./routes/posses'));
 app.use('/beats', auth, require('./routes/beats'));
+app.use('/comments', auth, require('./routes/comments'));
 
 // External API Routes
 app.use('/youtube/search', require('./routes/youtube/search'));
