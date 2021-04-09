@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
     posses: req.body.posses,
     tags: req.body.tags,
     hasAudio: req.body.hasAudio,
-    beatFile: req.body.audioFile,
+    beatFile: req.body.beatFile,
     recordingFile: req.body.recordingFile,
     timeStamp: admin.firestore.FieldValue.serverTimestamp(),
   };
