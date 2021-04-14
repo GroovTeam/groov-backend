@@ -19,6 +19,7 @@ app.use(cors({ origin: true }));
 app.use('/auth/register', require('./routes/auth/register'));
 app.use('/auth/login', require('./routes/auth/login'));
 app.use('/utils', require('./routes/auth/utils'));
+app.use('/auth/login-admin', require('./routes/auth/login-admin')); // For auth of backend testing
 
 // API Routes
 app.use('/posts', auth, require('./routes/posts'));

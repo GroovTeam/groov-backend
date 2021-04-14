@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { db, firebase } = require('../../util/admin');
+const { db, admin, firebase } = require('../../util/admin');
 
 router.post('/', (req, res) => {
   const userData = {
@@ -18,10 +18,16 @@ router.post('/', (req, res) => {
   if (isEmpty(userData.username)) {
     firebase.auth().signInWithEmailAndPassword(userData.email, userData.password)
       .then(data => {
-        return data.user.getIdToken(true);
-      })
-      .then(token => {
-        return res.json({ token });
+        const userId = data.user.uid;
+
+        // Make some custom tokens to be used with signInWithCustomToken() method (TODO: configure options)
+        admin.auth().createCustomToken(userId)
+          .then(customToken => {
+            return res.json({ customToken });
+          })
+          .catch(err => {
+            console.log('Error creating custom token:', err);
+          });
       })
       .catch(err => {
         console.error(err);
@@ -50,10 +56,15 @@ router.post('/', (req, res) => {
       // Sign in with extracted email as usual
       firebase.auth().signInWithEmailAndPassword(userEmail, userData.password)
         .then(data => {
-          return data.user.getIdToken(true);
-        })
-        .then(token => {
-          return res.json({ token });
+          const userId = data.user.uid;
+
+          admin.auth().createCustomToken(userId)
+            .then(customToken => {
+              return res.json({ customToken });
+            })
+            .catch(err => {
+              console.log('Error creating custom token:', err);
+            });
         })
         .catch(err => {
           console.error(err);
