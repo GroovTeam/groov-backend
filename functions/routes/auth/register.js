@@ -5,7 +5,6 @@ const { db, admin, firebase } = require('../../util/admin');
 router.post('/', (req, res) => {
   let userData = {
     email: req.body.email,
-    password: req.body.password,
     username: req.body.username,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -15,8 +14,10 @@ router.post('/', (req, res) => {
     dateCreated: admin.firestore.FieldValue.serverTimestamp(),
   };
 
+  const password = req.body.password;
+
   const { errors, valid } = validateData(userData);
-  if(!valid)
+  if (!valid)
     return res.status(400).json(errors);
 
   let token;
@@ -27,7 +28,7 @@ router.post('/', (req, res) => {
         throw new Error('Username already in use.');
       }
       else {
-        return firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password);
+        return firebase.auth().createUserWithEmailAndPassword(userData.email, password);
       }
     })
     .then(data => {
@@ -56,8 +57,8 @@ router.post('/', (req, res) => {
       // auth/invalid-email
       // auth/operation-not-allowed
       // auth/weak-password
-      if(err.code) {
-        if(err.code.startsWith('auth'))
+      if (err.code) {
+        if (err.code.startsWith('auth'))
           return res.status(400).json({ message: err.code });
         else
           return res.status(500).json({ message: err.code });
@@ -75,18 +76,16 @@ const validateData = data => {
 
   if (isEmpty(data.email))
     errors.email = 'Cannot be empty';
-  if(isEmpty(data.password))
-    errors.password = 'Cannot be empty';
-  if(isEmpty(data.username))
+  if (isEmpty(data.username))
     errors.username = 'Cannot be empty';
-  if(isEmpty(data.firstName))
+  if (isEmpty(data.firstName))
     errors.firstName = 'Cannot be empty';
-  if(isEmpty(data.lastName))
+  if (isEmpty(data.lastName))
     errors.lastName = 'Cannot be empty';
 
-  return { 
-    errors, 
-    valid: Object.keys(errors).length === 0 ? true : false 
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0 ? true : false
   };
 };
 
