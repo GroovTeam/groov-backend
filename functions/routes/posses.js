@@ -30,7 +30,7 @@ router.get('/info/:posseID', (req, res) => {
         return res.status(404).json({ message: 'Posse does not exist.' });
 
       const posseData = doc.data();
-      posseData.postID = doc.id;
+      posseData.posseID = doc.id;
 
       let usernames;
       // Get members of posse
