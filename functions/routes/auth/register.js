@@ -58,8 +58,24 @@ router.post('/', (req, res) => {
       // auth/operation-not-allowed
       // auth/weak-password
       if (err.code) {
-        if (err.code.startsWith('auth'))
-          return res.status(400).json({ message: err.code });
+        if (err.code.startsWith('auth')) {
+          let message;
+          switch(err.code) {
+            case 'auth/email-already-in-use':
+              message = 'Email is already in use.';
+              break;
+            case 'auth/invalid-email':
+              message = 'Email is invalid.';
+              break;
+            case 'auth/operation-not-allowed':
+              message = 'Cannot create account.';
+              break;
+            case 'auth/weak-password':
+              message = 'Password is too weak, must be at least 6 characters.';
+              break;
+          }
+          return res.status(400).json({ message: message });
+        }
         else
           return res.status(500).json({ message: err.code });
       }

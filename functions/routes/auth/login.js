@@ -35,8 +35,25 @@ router.post('/', (req, res) => {
         // auth/user-disabled
         // auth/user-not-found
         // auth/wrong-password
-        if (err.code.startsWith('auth'))
-          return res.status(400).json({ message: err.code });
+        if (err.code.startsWith('auth')) {
+          let message;
+          console.log(err.code);
+          switch(err.code) {
+            case 'auth/invalid-email':
+              message = 'Email is invalid.';
+              break;
+            case 'auth/user-disabled':
+              message = 'User account is disabled.';
+              break;
+            case 'auth/user-not-found':
+              message = 'User not found.';
+              break;
+            case 'auth/wrong-password':
+              message = 'Incorrect password.';
+              break;
+          }
+          return res.status(400).json({ message: message });
+        }
         else
           return res.status(500).json({ message: err.code });
       });
@@ -67,13 +84,29 @@ router.post('/', (req, res) => {
             });
         })
         .catch(err => {
-          console.error(err);
+          console.log(err.code);
           // auth/invalid-email
           // auth/user-disabled
           // auth/user-not-found
           // auth/wrong-password
-          if (err.code.startsWith('auth'))
-            return res.status(400).json({ message: err.code });
+          if (err.code.startsWith('auth')) {
+            let message;
+            switch(err.code) {
+              case 'auth/invalid-email':
+                message = 'Email is invalid.';
+                break;
+              case 'auth/user-disabled':
+                message = 'User account is disabled.';
+                break;
+              case 'auth/user-not-found':
+                message = 'User not found.';
+                break;
+              case 'auth/wrong-password':
+                message = 'Incorrect password.';
+                break;
+            }
+            return res.status(400).json({ message: message });
+          }
           else
             return res.status(500).json({ message: err.code });
         });
