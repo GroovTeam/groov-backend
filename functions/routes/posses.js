@@ -100,7 +100,7 @@ router.post('/leave/:posseID', (req, res) => {
     });
 });
 
-// Get all posts for a posse
+// Get all posts for a posse, given posse name
 router.get('/feed/', (req, res) => {
   const posseName = req.query.posseName;
 
