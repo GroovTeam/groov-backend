@@ -12,6 +12,7 @@ router.post('/profile', (req, res) => {
     tagLikes: req.body.tagLikes,
     tagDislikes: req.body.tagDislikes,
     tagNeutrals: req.body.tagNeutrals,
+    picURL: req.body.picURL
   };
 
   db.doc(`/users/${req.user.username}`)
@@ -39,7 +40,8 @@ router.get('/profile', (req, res) => {
       tagLikes: userData.tagLikes,
       tagDislikes: userData.tagDislikes,
       tagNeutrals: userData.tagNeutrals,
-      posses: userData.posses
+      posses: userData.posses,
+      picURL: userData.picURL
     };
 
     return res.status(200).json(profileData);
@@ -67,7 +69,8 @@ router.get('/profile/:username', (req, res) => {
       tagLikes: userData.tagLikes,
       tagDislikes: userData.tagDislikes,
       tagNeutrals: userData.tagNeutrals,
-      posses: userData.posses
+      posses: userData.posses,
+      picURL: userData.picURL
     };
 
     return res.status(200).json(profileData);
