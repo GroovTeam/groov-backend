@@ -20,6 +20,38 @@ router.get('/', (req, res) => {
     });
 });
 
+// Get info of a specific posse
+router.get('/info/:posseID', (req, res) => {
+  const posseID = req.params.posseID;
+  
+  db.collection('posses').doc(posseID).get()
+    .then(doc => {
+      if (!doc.exists)
+        return res.status(404).json({ message: 'Posse does not exist.' });
+
+      const posseData = doc.data();
+      posseData.postID = doc.id;
+
+      let usernames;
+      // Get members of posse
+      db.collection('users')
+        .where('posses', 'array-contains', posseData.name).get()
+        .then(snapshot => {
+          usernames = snapshot.docs
+            .map(doc => {
+              let userDoc = doc.data();
+              return userDoc.username;
+            });
+          posseData.usernames = usernames;
+          return res.status(200).json(posseData);
+        });
+    })
+    .catch(err => {
+      console.log(err.message);
+      return res.status(500).json({ message: err.message });
+    });
+});
+
 // Join a posse
 router.post('/join/:posseID', (req, res) => {
   const posseID = req.params.posseID;
@@ -68,10 +100,37 @@ router.post('/leave/:posseID', (req, res) => {
     });
 });
 
+// Get all posts for a posse
+router.get('/feed/', (req, res) => {
+  const posseName = req.query.posseName;
+
+  const resArr = [];
+  db.collection('posts')
+    .where('posses', 'array-contains', posseName)
+    .orderBy('timeStamp', 'desc')
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(postDoc => {
+        const postData = postDoc.data();
+        postData.postID = postDoc.id;
+        resArr.push(postData);
+      });
+      return res.json({ results: resArr });
+    })
+    .catch(err => {
+      return res.status(500).json({ message: err.message });
+    });
+});
+
 // Make a posse
 router.post('/create', (req, res) => {
   const posseData = {
-    name: req.body.name
+    name: req.body.name,
+    createdBy: req.user.username,
+    timeStamp: admin.firestore.FieldValue.serverTimestamp(),
+    tags: req.body.tags,
+    bio: req.body.bio,
+    picURL: req.body.picURL,
   };
 
   if(!posseData.name)
