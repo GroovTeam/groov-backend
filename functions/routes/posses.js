@@ -61,10 +61,16 @@ router.post('/join/:posseID', (req, res) => {
       if (!doc.exists)
         return res.status(404).json({ message: 'Posse does not exist' });
       
+      const posseData = doc.data();
+      const storedData = {
+        name: posseData.name,
+        posseID: doc.id
+      };
+
       db.collection('users')
         .doc(req.user.username)
         .update({
-          posses: admin.firestore.FieldValue.arrayUnion(doc.data().name)
+          posses: admin.firestore.FieldValue.arrayUnion(storedData)
         })
         .then(() => {
           return res.json({ message: 'Successfully joined posse' });
@@ -85,10 +91,16 @@ router.post('/leave/:posseID', (req, res) => {
       if (!doc.exists)
         return res.status(404).json({ message: 'Posse does not exist' });
       
+      const posseData = doc.data();
+      const storedData = {
+        name: posseData.name,
+        posseID: doc.id
+      };
+
       db.collection('users')
         .doc(req.user.username)
         .update({
-          posses: admin.firestore.FieldValue.arrayRemove(doc.data().name)
+          posses: admin.firestore.FieldValue.arrayRemove(storedData)
         })
         .then(() => {
           return res.json({ message: 'Successfully left posse' });
