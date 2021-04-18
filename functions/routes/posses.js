@@ -70,7 +70,8 @@ router.post('/join/:posseID', (req, res) => {
       db.collection('users')
         .doc(req.user.username)
         .update({
-          posses: admin.firestore.FieldValue.arrayUnion(storedData)
+          possesData: admin.firestore.FieldValue.arrayUnion(storedData),
+          posses: admin.firestore.FieldValue.arrayUnion(posseData.name)
         })
         .then(() => {
           return res.json({ message: 'Successfully joined posse' });
@@ -100,7 +101,8 @@ router.post('/leave/:posseID', (req, res) => {
       db.collection('users')
         .doc(req.user.username)
         .update({
-          posses: admin.firestore.FieldValue.arrayRemove(storedData)
+          possesData: admin.firestore.FieldValue.arrayRemove(storedData),
+          posses: admin.firestore.FieldValue.arrayRemove(posseData.name)
         })
         .then(() => {
           return res.json({ message: 'Successfully left posse' });
