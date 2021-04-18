@@ -41,6 +41,7 @@ router.get('/profile', (req, res) => {
       tagDislikes: userData.tagDislikes,
       tagNeutrals: userData.tagNeutrals,
       posses: userData.posses,
+      possesData: userData.possesData,
       picURL: userData.picURL
     };
 
@@ -70,6 +71,7 @@ router.get('/profile/:username', (req, res) => {
       tagDislikes: userData.tagDislikes,
       tagNeutrals: userData.tagNeutrals,
       posses: userData.posses,
+      possesData: userData.possesData,
       picURL: userData.picURL
     };
 
