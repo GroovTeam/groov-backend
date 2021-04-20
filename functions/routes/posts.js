@@ -77,10 +77,13 @@ router.get('/post/:id', (req, res) => {
 
 // Get user's posse feed
 router.get('/feed', (req, res) => {
-  const userPosses = req.user.posses;
+  let userPosses = req.user.posses;
   if (!userPosses || userPosses.length === 0)
     return res.json({ results: [], message: 'User has not joined any posses' });
   const resArr = [];
+
+  if (userPosses.length >= 10)
+    userPosses = userPosses.slice(0,10);
 
   // TODO: Current limit of posse request is 10
   db.collection('posts')
@@ -175,6 +178,8 @@ router.get('/tags', (req, res) => {
   if (!Array.isArray(tags))
     tags = [req.query.tag];
 
+  if (tags.length >= 10)
+    tags = tags.slice(0,10);
   console.log(tags);
   const resArr = [];
   db.collection('posts')
